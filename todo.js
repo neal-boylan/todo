@@ -1,4 +1,5 @@
 let todoItems = [];
+let doneItems = [];
 
 function renderTodo(todo) {
   const table = document.getElementById("todo-table");
@@ -9,6 +10,15 @@ function renderTodo(todo) {
   dateCell.innerText = todo.date;
 	const deleteCell = row.insertCell(2);
 	deleteCell.innerHTML = `<a onclick="deleteTodo('${todo.id}')" class="button">delete</a>`;
+}
+
+function renderDone(done) {
+  const table = document.getElementById("done-table");
+  const row = table.insertRow(-1);
+  const textCell = row.insertCell(0);
+  textCell.innerText = done.text;
+	const dateCell = row.insertCell(1);
+  dateCell.innerText = done.date;
 }
 
 function renderAllTodos() {
@@ -39,8 +49,16 @@ function deleteTodo(id) {
 	console.log(`Delete item: ${id}`);
   deleteAllTodos();
   const found = todoItems.findIndex((todo) => todo.id == id);
+  const doneText = todoItems[found].text;
   todoItems.splice(found, 1);
+  
+  const done = {
+    text: doneText,
+		date: new Date().toLocaleString("en-IE"),
+  };
+  doneItems.push(done);
   renderAllTodos();
+  renderDone(done);
 }
 
 function uuidv4() {
